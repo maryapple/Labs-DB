@@ -22,4 +22,13 @@ FROM guests g, providedservices ps
 WHERE g.Passport = GuestPassport AND ps.Price >= 4000;
 
 #разность
-SELECT 
+SELECT *
+FROM (SELECT ps.Service, g.FullName, ps.Price
+FROM guests g, providedservices ps
+WHERE g.Passport = ps.GuestPassport AND ps.Price < 1000) AS a
+LEFT JOIN
+(SELECT ps.Service, g.FullName, ps.Price
+FROM guests g, providedservices ps
+WHERE g.Passport = ps.GuestPassport AND ps.Price > 3000) AS b
+USING Price
+WHERE b.Service IS NOT NULL;
