@@ -22,13 +22,18 @@ FROM guests g, providedservices ps
 WHERE g.Passport = GuestPassport AND ps.Price >= 4000;
 
 #разность
-SELECT *
-FROM (SELECT ps.Service, g.FullName, ps.Price
-FROM guests g, providedservices ps
-WHERE g.Passport = ps.GuestPassport AND ps.Price < 1000) AS a
-LEFT JOIN
-(SELECT ps.Service, g.FullName, ps.Price
-FROM guests g, providedservices ps
-WHERE g.Passport = ps.GuestPassport AND ps.Price > 3000) AS b
-USING Price
-WHERE b.Service IS NOT NULL;
+SELECT g.Passport, g.FullName, g.RoomNumber, ps.Service
+FROM guests g
+LEFT JOIN providedservices ps
+ON g.Passport = ps.GuestPassport;
+
+#пересечение
+SELECT g.Passport, g.FullName, g.RoomNumber, ps.Service
+FROM guests g
+INNER JOIN providedservices ps
+ON g.Passport = ps.GuestPassport;
+
+#соединение
+SELECT r.Id, r.Class, rc.Price
+FROM rooms r, roomsclasses rc
+WHERE r.Class = rc.Class;
